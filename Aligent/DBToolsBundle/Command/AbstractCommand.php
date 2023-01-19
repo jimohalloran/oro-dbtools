@@ -4,7 +4,7 @@ namespace Aligent\DBToolsBundle\Command;
 use Aligent\DBToolsBundle\Helper\Compressor\Compressor;
 use Aligent\DBToolsBundle\Helper\DatabaseHelper;
 use InvalidArgumentException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link      http://www.aligent.com.au/
  **/
 
-abstract class AbstractCommand extends ContainerAwareCommand
+abstract class AbstractCommand extends Command
 {
     /** @var  DatabaseHelper */
     protected $database;

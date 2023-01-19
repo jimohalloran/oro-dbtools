@@ -1,5 +1,5 @@
 parameters:
-  aligent_db_tools.parameters.yml: '%kernel.root_dir%/../config/parameters.yml'
+  aligent_db_tools.parameters.yml: '%kernel.project_dir%/config/parameters.yml'
 
 services:
   aligent_db_tools.helper.db_settings:
