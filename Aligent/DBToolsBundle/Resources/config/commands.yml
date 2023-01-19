@@ -3,6 +3,8 @@ services:
     class: Aligent\DBToolsBundle\Command\AbstractCommand
     calls:
       - [setDatabaseHelper, ['@aligent_db_tools.helper.database']]
+      - [setUncompressedCompressor, ['@Aligent\DBToolsBundle\Helper\Compressor\Uncompressed']]
+      - [setGzipCompressor, ['@Aligent\DBToolsBundle\Helper\Compressor\Gzip']]
 
   Aligent\DBToolsBundle\Command\ConsoleCommand:
     parent: Aligent\DBToolsBundle\Command\AbstractCommand
@@ -29,6 +31,8 @@ services:
     parent: Aligent\DBToolsBundle\Command\AbstractCommand
     class: Aligent\DBToolsBundle\Command\DumpCommand
     public: false
+    calls:
+      - [setKernel, ['@kernel']]
     tags:
       - { name: console.command }
 

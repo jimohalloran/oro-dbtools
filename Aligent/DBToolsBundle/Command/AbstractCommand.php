@@ -2,6 +2,8 @@
 namespace Aligent\DBToolsBundle\Command;
 
 use Aligent\DBToolsBundle\Helper\Compressor\Compressor;
+use Aligent\DBToolsBundle\Helper\Compressor\Gzip;
+use Aligent\DBToolsBundle\Helper\Compressor\Uncompressed;
 use Aligent\DBToolsBundle\Helper\DatabaseHelper;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
@@ -24,6 +26,9 @@ abstract class AbstractCommand extends Command
     /** @var  DatabaseHelper */
     protected $database;
 
+    protected Uncompressed $uncompressedCompressor;
+    protected Gzip $gzipCompressor;
+
     public function processCommand($command)
     {
         $descriptorSpec = array(
@@ -45,6 +50,15 @@ abstract class AbstractCommand extends Command
       $this->database = $database;
     }
 
+    public function setUncompressedCompressor(Uncompressed $uncompressedCompressor) {
+        $this->uncompressedCompressor = $uncompressedCompressor;
+    }
+
+    public function setGzipCompressor(Gzip $gzip)
+    {
+        $this->gzipCompressor = $gzip;
+    }
+
     /**
      * @param string $type
      * @return Compressor
@@ -54,15 +68,10 @@ abstract class AbstractCommand extends Command
     {
         switch ($type) {
             case null:
-                /** @var $compressor Compressor*/
-                $compressor = $this->getContainer()->get('aligent_db_tools.helper.compressor.uncompressed');
-                return $compressor;
+                return $this->uncompressedCompressor;
             case 'gz':
             case 'gzip':
-                /** @var $compressor Compressor*/
-                $compressor = $this->getContainer()->get('aligent_db_tools.helper.compressor.gzip');
-                return $compressor;
-
+                return $this->gzipCompressor;
             default:
                 throw new InvalidArgumentException(
                     "Compression type '{$type}' is not supported. Known values are: gz, gzip"

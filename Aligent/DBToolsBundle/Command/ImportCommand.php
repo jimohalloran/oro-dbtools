@@ -20,7 +20,7 @@ class ImportCommand extends AbstractCommand
 {
 
     const COMMAND_NAME = 'oro:db:import';
-    const COMMAND_DESCRIPTION=  'opens mysql client by database config';
+    const COMMAND_DESCRIPTION=  'imports a sql file into configured database';
 
     protected function configure()
     {
@@ -38,7 +38,7 @@ class ImportCommand extends AbstractCommand
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->writeSection($output, 'Import MySQL Database');
 
@@ -65,11 +65,11 @@ class ImportCommand extends AbstractCommand
 
         if ($input->getOption('only-command')) {
             $output->writeln($command);
-            return;
+            return 0;
         } else {
             if ($input->getOption('only-if-empty') && count($this->database->getTables()) > 0 ) {
                 $output->writeln('<comment>Skip import. Database is not empty</comment>');
-                return;
+                return 0;
             }
         }
 
@@ -93,6 +93,8 @@ class ImportCommand extends AbstractCommand
         if ($input->getOption('optimize')) {
             unlink($fileName);
         }
+
+        return 0;
     }
 
     /**

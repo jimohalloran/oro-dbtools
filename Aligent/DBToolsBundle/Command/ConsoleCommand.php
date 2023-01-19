@@ -26,16 +26,16 @@ class ConsoleCommand extends AbstractCommand
             ->addOption("only-command", null, InputOption::VALUE_NONE, "Prints the command. Does not execute.");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $exec = $this->database->getMysqlConnectionString();
 
         if ($input->getOption('only-command')) {
             $output->writeln($exec);
-            return;
         } else {
             $this->processCommand($exec);
         }
 
+        return 0;
     }
 }

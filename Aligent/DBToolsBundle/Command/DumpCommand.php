@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -27,10 +28,18 @@ use Symfony\Component\Yaml\Yaml;
 
 class DumpCommand extends AbstractCommand
 {
+
     const COMMAND_NAME = 'oro:db:dump';
     const COMMAND_DESCRIPTION=  'Dumps the database';
 
     protected $tableDefinitions;
+
+    protected KernelInterface $kernel;
+
+    public function setKernel(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
 
     protected function configure()
     {
@@ -72,7 +81,7 @@ class DumpCommand extends AbstractCommand
         $this->loadTableDefinitions(); // Get table alias groupings from table_groups.yml
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $compressor = $this->getCompressor($input->getOption('compression'));
         $fileName = $this->getFileName($input, $output, $compressor);
@@ -163,6 +172,8 @@ class DumpCommand extends AbstractCommand
                 $this->processCommand($command);
             }
         }
+
+        return 0;
     }
 
     /**
@@ -228,7 +239,7 @@ class DumpCommand extends AbstractCommand
     }
 
     private function loadTableDefinitions() {
-        $filePath = $this->getContainer()->get('kernel')->locateResource('@AligentDBToolsBundle/Resources/config/table_groups.yml');
+        $filePath = $this->kernel->locateResource('@AligentDBToolsBundle/Resources/config/table_groups.yml');
 
         if (file_exists($filePath)) {
             $tableDefinitions = Yaml::parse(file_get_contents($filePath));

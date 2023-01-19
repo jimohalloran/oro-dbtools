@@ -29,7 +29,7 @@ class CreateCommand extends AbstractCommand
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output) {
+    public function execute(InputInterface $input, OutputInterface $output): int {
         $query = 'CREATE DATABASE IF NOT EXISTS `' . $this->database->settings->getName() . '`';
 
         if ($input->getOption('only-command')) {
@@ -39,5 +39,7 @@ class CreateCommand extends AbstractCommand
             $db->query($query);
             $output->writeln('<info>Created database</info> <comment>' . $this->database->settings->getName() . '</comment>');
         }
+
+        return 0;
     }
 }

@@ -25,7 +25,7 @@ class InfoCommand extends AbstractCommand
             ->setDescription(self::COMMAND_DESCRIPTION);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $data = array(
             array('host', $this->database->settings->getHost()),
@@ -42,5 +42,7 @@ class InfoCommand extends AbstractCommand
         $table->setHeaders(array('Name', 'Value'))
             ->setRows($data);
         $table->render();
+
+        return 0;
     }
 }

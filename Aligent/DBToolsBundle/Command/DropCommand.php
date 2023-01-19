@@ -35,7 +35,7 @@ class DropCommand extends AbstractCommand
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output) {
+    public function execute(InputInterface $input, OutputInterface $output): int {
 
         if ($input->getOption('force')) {
             $shouldDrop = true;
@@ -68,6 +68,8 @@ class DropCommand extends AbstractCommand
                 }
             }
         }
+
+        return 0;
     }
 
     private function dropTables() {

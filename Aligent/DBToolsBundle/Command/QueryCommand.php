@@ -31,7 +31,7 @@ class QueryCommand extends AbstractCommand
             ->addOption('only-command', null, InputOption::VALUE_NONE, 'Prints only the command. Does not Execute.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output) {
+    public function execute(InputInterface $input, OutputInterface $output): int {
 
         $query = $input->getArgument('query');
         /** @var QuestionHelper $helper */
@@ -48,5 +48,7 @@ class QueryCommand extends AbstractCommand
         } else {
             $this->processCommand($command);
         }
+
+        return 0;
     }
 }
