@@ -159,7 +159,7 @@ class DumpCommand extends AbstractCommand
         }
 
         //dump the rest
-        $dumpCommand = $this->database->getMysqlConnectionString('mysqldump') . ' ' . $ignore;
+        $dumpCommand = $this->database->getMysqlConnectionString('mysqldump', ['--triggers', '--routines', '--events']) . ' ' . $ignore;
         $dumpCommand .= $this->postDumpPipeCommands();
         $dumpCommand = $compressor->getCompressingCommand($dumpCommand);
         $dumpCommand .= (count($stripTables) > 0 ? ' >> ' : ' > ') . escapeshellarg($fileName);
